@@ -1,8 +1,9 @@
 import paypalrestsdk
-from flask import current_app
+from decouple import config
 from db import db
 from models.enums import RoleType
 from models.user import UserModel
+from werkzeug.exceptions import NotFound
 
 
 class PaymentManager:
@@ -10,8 +11,8 @@ class PaymentManager:
     def configure_paypal():
         paypalrestsdk.configure({
             "mode": "sandbox",
-            "client_id": current_app.config["PAYPAL_CLIENT_ID"],
-            "client_secret": current_app.config["PAYPAL_CLIENT_SECRET"]
+            "client_id": config("CLIENT_ID"),
+            "client_secret": config("PAYPAL_SECRET")
         })
 
     @staticmethod
@@ -24,13 +25,13 @@ class PaymentManager:
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": f"{current_app.config['CLIENT_URL']}/success?user_id={user_pk}",
-                "cancel_url": f"{current_app.config['CLIENT_URL']}/cancel"
+                "return_url": f"{config("CLIENT_URL")}/success?user_pk={user_pk}",
+                "cancel_url": f"{config("CLIENT_URL")}/cancel"
             },
             "transactions": [{
                 "amount": {
                     "total": "10.00",
-                    "currency": "BGN"
+                    "currency": "EUR"
                 },
                 "description": "Upgrade to Superuser"
             }]
@@ -44,5 +45,7 @@ class PaymentManager:
     @staticmethod
     def upgrade_user_to_superuser(user_pk):
         user = UserModel.query.get(user_pk)
+        if not user:
+            raise NotFound
         user.role = RoleType.super_user
         db.session.flush()
