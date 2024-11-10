@@ -9,7 +9,7 @@ from utils.decorators import permission_required
 
 class AddProgramToUser(Resource):
     @auth.login_required
-    @permission_required(RoleType.user)
+    @permission_required([RoleType.user, RoleType.super_user])
     def post(self, program_pk):
         user = auth.current_user()
         UserManager.add_program(user, program_pk)
@@ -18,7 +18,7 @@ class AddProgramToUser(Resource):
 
 class UserProgramsList(Resource):
     @auth.login_required
-    @permission_required(RoleType.user)
+    @permission_required([RoleType.user, RoleType.super_user])
     def get(self):
         user = auth.current_user()
         programs = UserManager.get_all_user_programs(user)
@@ -27,7 +27,7 @@ class UserProgramsList(Resource):
 
 class UserSpecificProgram(Resource):
     @auth.login_required
-    @permission_required(RoleType.user)
+    @permission_required([RoleType.user, RoleType.super_user])
     def get(self, program_pk):
         user = auth.current_user()
         program = UserManager.get_specific_program(user, program_pk)

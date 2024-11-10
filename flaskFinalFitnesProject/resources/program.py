@@ -12,7 +12,7 @@ from utils.decorators import schema_validator, permission_required
 class CreateProgram(Resource):
     @auth.login_required
     @schema_validator(ProgramRequestSchema)
-    @permission_required(RoleType.trainer)
+    @permission_required([RoleType.trainer])
     def post(self):
         data = request.get_json()
         program = ProgramManager.create_program(data)

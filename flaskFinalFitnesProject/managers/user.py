@@ -5,8 +5,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
 from managers.auth import AuthManager
 from models import ProgramModel
-from models.user import UserModel
 from models.enums import RoleType
+from models.user import UserModel
 
 
 class UserManager(Resource):
@@ -30,7 +30,7 @@ class UserManager(Resource):
     @staticmethod
     def add_program(user: UserModel, program_pk):
         program: ProgramModel = db.session.execute(db.select(ProgramModel).filter_by
-                                     (pk=program_pk)).scalar_one_or_none()
+                                                   (pk=program_pk)).scalar_one_or_none()
         if program is None:
             raise BadRequest("This program does not exist")
 

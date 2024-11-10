@@ -1,4 +1,5 @@
 import re
+
 from marshmallow import ValidationError
 from password_strength import PasswordPolicy
 
@@ -12,14 +13,17 @@ password_requirements = PasswordPolicy.from_names(
     nonletters=1,
 )
 
+
 def validate_email(value):
     if not re.match(EMAIL_REGEX, value):
         raise ValidationError("Invalid email format.")
+
 
 def password_validator(value):
     errors = password_requirements.test(value)
     if errors:
         raise ValidationError("Password is not strong enough, try another one")
+
 
 def validate_name(value):
     try:

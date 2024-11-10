@@ -1,7 +1,8 @@
 from resources.auth import RegisterUser, LoginUser
-from resources.exercise import CreateExercise, AllExercisesList, SpecificExercise
+from resources.exercise import CreateExercise, AllExercisesList, SpecificExercise, DeleteExercise
 from resources.payment import InitiatePayment, PaymentSuccess, PaymentCancel
 from resources.program import CreateProgram, AllProgramsList, SpecificProgram
+from resources.trainer import CreateTrainer
 from resources.user import AddProgramToUser, UserProgramsList, UserSpecificProgram
 
 routes = (
@@ -19,4 +20,6 @@ routes = (
     (InitiatePayment, "/user/payment"),
     (PaymentSuccess, "/success"),
     (PaymentCancel, "/cancel"),
+    (DeleteExercise, "/admin/delete/<int:exercise_pk>"),
+    (CreateTrainer, "/admin/trainer/<int:user_pk>")
 )

@@ -6,7 +6,6 @@ from flask_httpauth import HTTPTokenAuth
 from flask_restful import abort
 
 from db import db
-
 from models import UserModel
 
 
@@ -34,6 +33,7 @@ class AuthManager:
 
 
 auth = HTTPTokenAuth(scheme="Bearer")
+
 
 @auth.verify_token
 def verify_token(token):
